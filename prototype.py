@@ -72,19 +72,3 @@ print("")
 
 
 
-#print(network_id)
-#print(first_legal_address)
-#print(last_address)
-#print(broadcast_address)
-   
-#print(mask)        
-#print('{active_octet:b}')
-#print(active_octet)
-#print(active_octet_index)
-#print(active_octet_subnet_bits)
-#print(octets_list)
-#print(subnet_mask)
-
-
-
-
