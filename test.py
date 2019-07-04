@@ -1,7 +1,7 @@
 #!/usr/bin/python3.6
 
 #arbitrary addresses
-ip_address1 = "172.13.12.3/13"
+ip_address1 = "172.13.12.64/27"
 ip_address2 = "192.168.4.36/27"
 
 #retrieve an address and a mask
