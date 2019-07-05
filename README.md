@@ -8,4 +8,4 @@ for any IPv4 network that you will input inside of the file as address1.
 It is going to change and more functionality will be added, but for now it is at 
 least working as intended.
 
-p.s. Just discovered some problems with /31 and /32 networks, will try to fix that in the near future
+

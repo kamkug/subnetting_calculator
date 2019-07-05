@@ -1,7 +1,7 @@
 #!/usr/bin/python3.6
 
 #arbitrary addresses
-ip_address1 = "172.13.12.64/27"
+ip_address1 = "172.13.12.182/32"
 ip_address2 = "192.168.4.36/27"
 
 #retrieve an address and a mask
@@ -44,7 +44,7 @@ networkId = '.'.join(list_decimal)
 #First address
 test_list = list_decimal
 test_list[-1] = str(int(test_list[-1]) + 1)
-first_address = '.'.join(test_list)
+first_address = networkId if subnet_mask == 32 else '.'.join(test_list)
 test_list = list_binary
 
 
@@ -57,7 +57,7 @@ last_address_binary = format(last_address,'032b')
 for i in range(4):
     last_address_list.append(str(int(last_address_binary[(8 * i):(8 * i + 8)],2)))
 
-last_address = '.'.join(last_address_list)
+last_address = networkId if subnet_mask == 32 else first_address if subnet_mask == 31 else '.'.join(last_address_list)
 
 #Broadcast address
 broadcast_list = last_address_list
