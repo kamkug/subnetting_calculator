@@ -1,28 +1,55 @@
 #!/usr/bin/python3.6
 
+#test1 = ['11111111', '11111111' , '11111111', '11111111']
+def get_binary(option, octets_list=[]):
+    """
+    Function returns binary representation of:
+    - 255.255.255.255 subnet mask
+    - IPv4 binary representation of a given decimal octets list
+    """
+    full_ones = ''
+    full_address = []
+    for i in range(0,4):
+        if option == "full_ones" and octets_list == []:
+            full_ones += '11111111'
+        elif "binaddress":
+            full_address.append(format(int(octets_list[i]),'08b'))
+    full_address = ''.join(full_address)
+    return full_ones if option == "full_ones" else full_address
+
+def get_DDN(binary_list):
+    """
+    Function returns an address formated in Dotted Decimal Notation
+    Functions returns a warning if it is unsuccessful (requires a list
+    of four numeric elements)
+    """
+    if len(binary_list) == 4:
+        for i in range(4):
+            if binary_list[i].isdecimal():
+                continue
+            else:
+                print("[-] A list of decimal octets is required")
+                return 1
+        return '.'.join(binary_list)
+
+#print(get_DDN(test1))
+
 #arbitrary addresses
-ip_address1 = "172.13.12.182/32"
+ip_address1 = "172.13.12.123/27"
 ip_address2 = "192.168.4.36/27"
 
 #retrieve an address and a mask
 address_list = ip_address1.split('/')
 octets_list = address_list[0].split('.')
 subnet_mask = int(address_list[1])
-
 #get important subnet info
 byte = 8
 active_octet_index = subnet_mask // byte
 remainding_octets = 4 - active_octet_index
 active_octet_subnet_bits = subnet_mask
-full_ones = ''
-full_address = []
-for i in range (0, 4):
-    full_address.append(format(int(octets_list[i]),'08b'))
-    full_ones += '11111111'
-
-full_address_binary = ''.join(full_address)
+full_ones = get_binary("full_ones")
+full_address_binary = get_binary("binaddress", octets_list=octets_list)#[]
 mask = ''
-
 #create a binary representation of a mask
 for i in range(0,32):
     mask = mask + '1' if i < subnet_mask else  mask + '0'
@@ -36,15 +63,15 @@ list_binary = []
 list_decimal = []
 for i in range (4):
     
-    list_binary.append(network_id_binary[(i * 8): (i * 8 + 8)])
+    list_binary.append(network_id_binary[(i * byte): (i * byte + byte)])
     list_decimal.append(str(int(list_binary[i],2)))
 
-networkId = '.'.join(list_decimal)
+networkId = get_DDN(list_decimal)
 
 #First address
 test_list = list_decimal
 test_list[-1] = str(int(test_list[-1]) + 1)
-first_address = networkId if subnet_mask == 32 else '.'.join(test_list)
+first_address = networkId if subnet_mask == 32 else get_DDN(test_list)
 test_list = list_binary
 
 
@@ -55,9 +82,9 @@ last_address = int(address,2) + count_usable_addresses
 last_address_list = []
 last_address_binary = format(last_address,'032b') 
 for i in range(4):
-    last_address_list.append(str(int(last_address_binary[(8 * i):(8 * i + 8)],2)))
+    last_address_list.append(str(int(last_address_binary[(byte * i):(byte * i + byte)],2)))
 
-last_address = networkId if subnet_mask == 32 else first_address if subnet_mask == 31 else '.'.join(last_address_list)
+last_address = networkId if subnet_mask == 32 else first_address if subnet_mask == 31 else get_DDN(last_address_list)#'.'.join(last_address_list)
 
 #Broadcast address
 broadcast_list = last_address_list
