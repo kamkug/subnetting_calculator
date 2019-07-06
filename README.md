@@ -10,11 +10,14 @@ the program display window.
 TKinter can be obtained in a following way (worked for me anyway) :
 
 for Ubuntu 18.04:
+```
 sudo apt-get install python3-tk
+```
 
 for RedHat 8.0.1:
+```
 yum install python3-tkinter
-
+```
 
 You might have a problem with your display, this could be a solution for you (right at the bottom) :
 
