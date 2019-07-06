@@ -4,8 +4,8 @@ class SubnettingCalculator():
     def __init__(self, ipv4_address, cidr_mask):
         
         # Collecting some essential information
-        self.ipv4_address = ipv4_address
-        self.octets_list = self.ipv4_address.split('.')
+        self.ipv4_address = self.set_DDN(ipv4_address)
+        self.octets_list = ipv4_address#self.ipv4_address.split('.')
         self.mask_decimal = cidr_mask
         self.byte = 8
         self.full_ones = self.set_binary("full_ones")
@@ -15,11 +15,11 @@ class SubnettingCalculator():
         # Network ID
         self.networkId,self.list_binary,self.list_decimal = self.set_networkID()
         # First Address
-        self.firstAddress = self.set_firstAddress(self.list_decimal, self.mask_decimal, self.networkId)
+        self.firstAddress = self.set_firstAddress(self.list_decimal, self.networkId, self.mask_decimal)
         # Last Address
         self.addresses_count = self.set_address_count()
-        self.lastAddress, self.last_address_list = self.set_lastAddress(self.addresses_count, self.list_binary, self.mask_decimal, self.networkId)
-        self.broadcastAddress = self.set_broadcastAddress(self.last_address_list)
+        self.lastAddress, self.last_address_list = self.set_lastAddress(self.addresses_count, self.firstAddress, self.list_binary, self.mask_decimal, self.networkId)
+        self.broadcastAddress = self.set_broadcastAddress(self.last_address_list, self.mask_decimal)
         # display informations
         self.display_informations()
     
@@ -67,12 +67,12 @@ class SubnettingCalculator():
         full_address = ''.join(full_address)
         return full_ones if option == "full_ones" else full_address
  
-    def set_broadcastAddress(self, last_address_list):
+    def set_broadcastAddress(self, last_address_list, mask_decimal):
         """
         Function returns a broadcast address based on a last index of 
         previously obtained last_address_list
         """
-        last_address_list[-1] = str(int(last_address_list[-1]) + 1)
+        last_address_list[-1] = str(int(last_address_list[-1]) + 1) if mask_decimal < 31 else last_address_list[-1]
         return self.set_DDN(last_address_list)   
    
     def set_DDN(self, binary_list):
@@ -98,7 +98,7 @@ class SubnettingCalculator():
         list_decimal[-1] = str(int(list_decimal[-1]) + 1)
         return networkID if mask_decimal == 32 else self.set_DDN(list_decimal)
 
-    def set_lastAddress(self, addresses_count, list_binary, mask_decimal, networkId):
+    def set_lastAddress(self, addresses_count, first_address , list_binary, mask_decimal, networkId):
         """
         Function returns last_address and last_address_list based on a decimal mask
         and previously obtained Network ID
@@ -109,7 +109,13 @@ class SubnettingCalculator():
         last_address_list = []
         for i in range(4):
             last_address_list.append(str(int(last_address_binary[(self.byte * i):(self.byte * i + self.byte)], 2)))
-        last_address = networkId if mask_decimal == 32 else first_address if mask_decimal == 31 else self.set_DDN(last_address_list)
+        #last_address = networkId if mask_decimal == 32 else first_address if mask_decimal == 31 else self.set_DDN(last_address_list)
+        if mask_decimal == 32:
+            last_address_list[-1] = networkId.split('.')[-1]
+        elif mask_decimal == 31:
+            last_address_list[-1] = first_address.split('.')[-1]
+        last_address = self.set_DDN(last_address_list)
+            
         return last_address, last_address_list
 
     def set_mask_binary(self, mask_decimal):
@@ -158,11 +164,11 @@ class SubnettingCalculator():
 
    
 
-
+"""
 s = SubnettingCalculator('192.168.4.200',24)
 print(s.get_addresses_count())
 print(s.get_networkID())
 print(s.get_firstAddress())
 print(s.get_lastAddress())
 print(s.get_broadcastAddress())
-
+"""
