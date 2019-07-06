@@ -10,9 +10,11 @@ def calculate(event):
     Function collects and verifies user inputs from address and mask fields and
     subsequently provides the output 
     """
+
     notice_field.delete(0, 'end')
     octets_list = address_field.get().split('.')
     mask_decimal = 0
+    
     try:
         if 0 <= int(mask_decimal_field.get()) <= 32:
             mask_decimal = int(mask_decimal_field.get())
@@ -20,8 +22,7 @@ def calculate(event):
             mask_decimal = 24        
     except:
         mask_decimal = 24
-        notice_field.delete(0, 'end')
-        notice_field.insert(END, "Using default mask of 24")
+        notice_field.insert(END, "Using default mask of 24; ")
         
     counter = 0
     length = len(octets_list)
@@ -35,23 +36,24 @@ def calculate(event):
     elif octets_list == ['']:
         octets_list = ['192','168','0','0']
         counter = 4
-        notice_field.delete(0, 'end')
-        notice_field.insert(END, "Using default address 192.168.0.0/24")
+        notice_field.insert(END, "Using default address 192.168.0.0; ")
     else:
-        notice_field.delete(0, 'end')
-        notice_field.insert(END, "Provide a correct IPv4 address in a DDN form")
+        notice_field.insert(END, "Provide a correct IPv4 address in a DDN form;")
         print("Provide a correct IPv4 address in a DDN form")    
     
     if counter == 4:
         Sub = SubnettingCalculator(octets_list, mask_decimal)
-        networkID_field.delete(0, 'end')
-        networkID_field.insert(END,Sub.get_networkID()) 
-        firstAddress_field.delete(0, 'end')
-        firstAddress_field.insert(END, Sub.get_firstAddress())
-        lastAddress_field.delete(0, 'end')
-        lastAddress_field.insert(END, Sub.get_lastAddress())
-        broadcastAddress_field.delete(0, 'end')
-        broadcastAddress_field.insert(END, Sub.get_broadcastAddress())
+        insert_text(networkID_field, Sub.get_networkID())
+        insert_text(firstAddress_field, Sub.get_firstAddress())
+        insert_text(lastAddress_field, Sub.get_lastAddress())
+        insert_text(broadcastAddress_field, Sub.get_broadcastAddress())
+
+def insert_text(field, text):
+    """
+    Function clears and susequently populates a selected field
+    """
+    field.delete(0, 'end')
+    field.insert(END, text)
 
 def get_label_and_entry(window_object, label_text, label_xPos, label_yPos, entry_text, entry_xPos, entry_yPos, width=20):
     """
