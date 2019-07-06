@@ -32,11 +32,11 @@ def calculate(event):
                 counter += 1
             else:
                 break
-    elif len(octets_list) == 0:
+    elif octets_list == ['']:
         octets_list = ['192','168','0','0']
         counter = 4
         notice_field.delete(0, 'end')
-        notice_field.insert(END, "Using default address 0.0.0.0")
+        notice_field.insert(END, "Using default address 192.168.0.0/24")
     else:
         notice_field.delete(0, 'end')
         notice_field.insert(END, "Provide a correct IPv4 address in a DDN form")
@@ -52,51 +52,34 @@ def calculate(event):
         lastAddress_field.insert(END, Sub.get_lastAddress())
         broadcastAddress_field.delete(0, 'end')
         broadcastAddress_field.insert(END, Sub.get_broadcastAddress())
+
+def get_label_and_entry(window_object, label_text, label_xPos, label_yPos, entry_text, entry_xPos, entry_yPos, width=20):
+    """
+    Function will return a label and an entry object according
+    to predefined values
+    """
+    label = Label(window_object, text=label_text)
+    label.place(x=label_xPos, y=label_yPos)
+    entry_field = Entry(window_object, text=entry_text, width=width)
+    entry_field.place(x=entry_xPos, y=entry_yPos)
+    return label, entry_field       
     
 
 # Initialise a high-level window object
 window = Tk()
-# Add an address input field
-address_label = Label(window, text="IPv4 address (192.168.0.0 default) :")
-address_label.place(x=10 , y=20)
-address_field = Entry(window, text="Ip address")
-address_field.place(x=300, y=20)
-# Add a subnet mask input field
-mask_decimal = Label(window, text="Subnet mask in decimal form (24 default):")
-mask_decimal.place(x=10, y=60)
-mask_decimal_field = Entry(window, text="Subnet mask")
-mask_decimal_field.place(x=300, y=60)
-# Button that invokes calculation 
+# Button that invokes the process
+# The rest of graphical objects
+address_label, address_field = get_label_and_entry(window, "IPv4 address (192.168.0.0 default): ", 10, 20, "Ipv4 address", 300, 20)
+mask_decimal_label, mask_decimal_field = get_label_and_entry(window, "Subnet mask in decimal form (24 default): ", 10, 60, "Subnet mask", 300, 60)
+notice_label, notice_field = get_label_and_entry(window, "Notice box: ", 10, 300, "Notice Box:", 100, 300, 50)
+networkID_label, networkID_field = get_label_and_entry(window, "Network ID:", 150, 160, "Network address", 300, 160)
+firstAddress_label, firstAddress_field = get_label_and_entry(window, "First address:", 150, 190, "First address", 300, 190)
+lastAddress_label, lastAddress_field = get_label_and_entry(window, "Last address:", 150, 220, "Last address", 300, 220)
+broadcastAddress_label, broadcastAddress_field = get_label_and_entry(window, "Broadcast address:", 150, 250, "Broadcast address", 300, 250)
 calculation_button = Button(window, text="Calculate")
 calculation_button.place(x=335, y=100, width=100)
 calculation_button.bind('<Button-1>', calculate)
-# Notice box
-notice_label = Label(window, text="Notice :")
-notice_label.place(x=10, y=300)
-notice_field = Entry(window, text="Notice Box", width=50)
-notice_field.place(x=100, y=300)
-# Present the result
-networkID_label = Label(window, text="Network ID:")
-networkID_label.place(x=150, y=160)
-networkID_field = Entry(window, text="Network ID")
-networkID_field.place(x=300, y=160)
-
-firstAddress_label = Label(window, text="First address:")
-firstAddress_label.place(x=150, y=190)
-firstAddress_field = Entry(window, text="First address")
-firstAddress_field.place(x=300, y=190)
-
-lastAddress_label = Label(window, text="Last address:")
-lastAddress_label.place(x=150, y=220)
-lastAddress_field = Entry(window, text="Last address")
-lastAddress_field.place(x=300, y=220)
-
-broadcastAddress_label = Label(window, text="Broadcast address:")
-broadcastAddress_label.place(x=150, y=250)
-broadcastAddress_field = Entry(window, text="Broadcast address")
-broadcastAddress_field.place(x=300, y=250)
-
-
+    
 window.title("Subnetting calculator")
 window.geometry('600x400+10+10')
 window.mainloop()
