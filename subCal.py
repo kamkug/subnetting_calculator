@@ -28,7 +28,7 @@ class SubnettingCalculator():
         Function displays all of the gathered informations
         """
         print()
-        print(f"Based on the following IPv4 address: {self.ipv4_address}")
+        print(f"Based on the following IPv4 address: {self.ipv4_address}/{self.mask_decimal}")
         print()
         print(22*'-'+'RESULT'+'-'+22*'-')
         print()
@@ -157,7 +157,6 @@ class SubnettingCalculator():
     def get_lastAddress(self):
         return self.lastAddress
 
-    
     def get_networkID(self):
         return self.networkId
 

@@ -42,6 +42,7 @@ class SubnettingCalculatorDisplay():
             if 0 <= int(self.mask_decimal_field.get()) <= 32:
                 mask_decimal = int(self.mask_decimal_field.get())
             else:
+                self.notice_field.insert(END, "Using default mask of 24;")
                 mask_decimal = 24        
         except:
             mask_decimal = 24
