@@ -3,9 +3,8 @@
 The program is meant to return a network ID, first address, last address and a broadcast address
 for an IP address in question. 
 
-For running the program python3.6 version is going to be compatible (this is the only version I have tested it on).
-On top of a standard library you would need to have TKinter package installed as well to be able to use
-the program display window. 
+Python3.6 version is going to be perfect to run this program(hence this is the only version I have tested it on).
+On top of a standard library you would require to have TKinter package installed as well (for the display window).
 
 TKinter can be obtained in a following way (worked for me anyway) :
 
