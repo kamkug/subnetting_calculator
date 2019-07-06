@@ -5,7 +5,7 @@ class SubnettingCalculator():
         
         # Collecting some essential information
         self.ipv4_address = self.set_DDN(ipv4_address)
-        self.octets_list = ipv4_address#self.ipv4_address.split('.')
+        self.octets_list = ipv4_address
         self.mask_decimal = cidr_mask
         self.byte = 8
         self.full_ones = self.set_binary("full_ones")
@@ -108,8 +108,7 @@ class SubnettingCalculator():
         last_address_binary = format(last_address_decimal, '032b')
         last_address_list = []
         for i in range(4):
-            last_address_list.append(str(int(last_address_binary[(self.byte * i):(self.byte * i + self.byte)], 2)))
-        #last_address = networkId if mask_decimal == 32 else first_address if mask_decimal == 31 else self.set_DDN(last_address_list)
+            last_address_list.append(str(int(last_address_binary[(self.byte * i):(self.byte * i + self.byte)], 2))) 
         if mask_decimal == 32:
             last_address_list[-1] = networkId.split('.')[-1]
         elif mask_decimal == 31:

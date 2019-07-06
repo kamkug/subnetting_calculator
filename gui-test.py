@@ -1,23 +1,37 @@
 #!/usr/bin/python3
+
+from functools import partial
 from subCal import *
 from tkinter import *
 
 # Implementing functionality
 def calculate(event):
     octets_list = address_field.get().split('.')
+    mask_decimal = int(mask_decimal_field.get())
+    Sub = ''    
     counter = 0
     length = len(octets_list)
 
     if length == 4:
         for i in range (length):
-            if not octets_list[i].startswith('0') and octets_list[i].isdecimal() and 0 <= int(octets_list[i]) <= 255:
+            if  octets_list[i].isdecimal() and 0 <= int(octets_list[i]) <= 255:
                 counter += 1
             else:
                 break
+            
     if counter == 4:
-        print(octets_list)
+        Sub = SubnettingCalculator(octets_list, mask_decimal)
+        networkID_field.delete(0, 'end')
+        networkID_field.insert(END,Sub.get_networkID()) 
+        firstAddress_field.delete(0, 'end')
+        firstAddress_field.insert(END, Sub.get_firstAddress())
+        lastAddress_field.delete(0, 'end')
+        lastAddress_field.insert(END, Sub.get_lastAddress())
+        broadcastAddress_field.delete(0, 'end')
+        broadcastAddress_field.insert(END, Sub.get_broadcastAddress())
+        
     else:
-        print("Provide a correctIpv4 in a DDN form")
+        print("Provide a correct Ipv4 in a DDN form")
 
 # Initialise a high-level window object
 window = Tk()
