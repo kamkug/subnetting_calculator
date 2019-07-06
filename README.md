@@ -15,7 +15,7 @@ sudo apt-get install python3-tk
 
 for RedHat 8.0.1:
 ```
-yum install python3-tkinter
+sudo yum install python3-tkinter
 ```
 
 You might have a problem with your display, this could be a solution for you (right at the bottom) :
