@@ -25,7 +25,7 @@ https://stackoverflow.com/questions/37604289/tkinter-tclerror-no-display-name-an
 
 
 I am intending to do a little bit more polishing on this particular program but its functionality is pretty much
-where I wanted it be (at least at the moment).
+where I wanted it to be (at least at the moment).
 
 Thanks for your interests :)
 
