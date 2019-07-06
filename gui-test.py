@@ -6,9 +6,23 @@ from tkinter import *
 
 # Implementing functionality
 def calculate(event):
+    """
+    Function collects and verifies user inputs from address and mask fields and
+    subsequently provides the output 
+    """
+    notice_field.delete(0, 'end')
     octets_list = address_field.get().split('.')
-    mask_decimal = int(mask_decimal_field.get())
-    Sub = ''    
+    mask_decimal = 0
+    try:
+        if 0 <= int(mask_decimal_field.get()) <= 32:
+            mask_decimal = int(mask_decimal_field.get())
+        else:
+            mask_decimal = 24        
+    except:
+        mask_decimal = 24
+        notice_field.delete(0, 'end')
+        notice_field.insert(END, "Using default mask of 24")
+        
     counter = 0
     length = len(octets_list)
 
@@ -18,7 +32,16 @@ def calculate(event):
                 counter += 1
             else:
                 break
-            
+    elif len(octets_list) == 0:
+        octets_list = ['192','168','0','0']
+        counter = 4
+        notice_field.delete(0, 'end')
+        notice_field.insert(END, "Using default address 0.0.0.0")
+    else:
+        notice_field.delete(0, 'end')
+        notice_field.insert(END, "Provide a correct IPv4 address in a DDN form")
+        print("Provide a correct IPv4 address in a DDN form")    
+    
     if counter == 4:
         Sub = SubnettingCalculator(octets_list, mask_decimal)
         networkID_field.delete(0, 'end')
@@ -29,19 +52,17 @@ def calculate(event):
         lastAddress_field.insert(END, Sub.get_lastAddress())
         broadcastAddress_field.delete(0, 'end')
         broadcastAddress_field.insert(END, Sub.get_broadcastAddress())
-        
-    else:
-        print("Provide a correct Ipv4 in a DDN form")
+    
 
 # Initialise a high-level window object
 window = Tk()
 # Add an address input field
-address_label = Label(window, text="Provide an IPv4 address in a DDN format:")
+address_label = Label(window, text="IPv4 address (192.168.0.0 default) :")
 address_label.place(x=10 , y=20)
 address_field = Entry(window, text="Ip address")
 address_field.place(x=300, y=20)
 # Add a subnet mask input field
-mask_decimal = Label(window, text="Provide a subnet mask in its decimal form:")
+mask_decimal = Label(window, text="Subnet mask in decimal form (24 default):")
 mask_decimal.place(x=10, y=60)
 mask_decimal_field = Entry(window, text="Subnet mask")
 mask_decimal_field.place(x=300, y=60)
@@ -49,6 +70,11 @@ mask_decimal_field.place(x=300, y=60)
 calculation_button = Button(window, text="Calculate")
 calculation_button.place(x=335, y=100, width=100)
 calculation_button.bind('<Button-1>', calculate)
+# Notice box
+notice_label = Label(window, text="Notice :")
+notice_label.place(x=10, y=300)
+notice_field = Entry(window, text="Notice Box", width=50)
+notice_field.place(x=100, y=300)
 # Present the result
 networkID_label = Label(window, text="Network ID:")
 networkID_label.place(x=150, y=160)
