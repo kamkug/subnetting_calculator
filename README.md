@@ -28,9 +28,8 @@ sudo yum install python3-tkinter
 ```
 
 tkinter docs:
-```
+
 https://tkdocs.com/tutorial/install.html
-```
 
 If you are having a problem with your display, this could be a solution for you (right at the bottom of the article) :
 
