@@ -1,4 +1,4 @@
-# subnetting calculator class
+# Subnetting calculator
 
 Author: Kamil Kugler
 
