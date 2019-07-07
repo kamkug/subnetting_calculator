@@ -21,7 +21,7 @@ class SubnettingCalculator():
         self.lastAddress, self.last_address_list = self.set_lastAddress(self.addresses_count, self.firstAddress, self.list_binary, self.mask_decimal, self.networkId)
         self.broadcastAddress = self.set_broadcastAddress(self.last_address_list, self.mask_decimal)
         # display informations
-        #self.display_informations()
+        self.display_informations()
     
     def display_informations(self):
         """
@@ -160,33 +160,10 @@ class SubnettingCalculator():
     def get_networkID(self):
         return self.networkId
 
-import json
-addresses_dict = {}
-
-with open("input/input.json") as addr:
-    addresses = json.load(addr )
-    for item in addresses["addresses_list"]:
-        addr_list = []
-        s = SubnettingCalculator(item['address'], item['mask'])
-        #print(f"Network ID: {s.get_networkID()}")
-        #print(f"First address: {s.get_firstAddress()}")
-        #print(f"Last address: {s.get_lastAddress()}")
-        #print(f"Broadcast address: {s.get_broadcastAddress()}")
-        #print(f"Available addresses: {s.get_addresses_count()}")
-        addr_list.append({
-                "NetworkID": s.get_networkID(),
-                "FirstAddress": s.get_firstAddress(),
-                "LastAddress": s.get_lastAddress(),
-                "BroadcastAddress": s.get_broadcastAddress(),
-                "AddressesCount": s.get_addresses_count()
-                        })
-        name = str('.'.join(item['address'])) + "/" + str(item['mask'])
-        addresses_dict[name] = addr_list
-
-with open("output/results.json", "w")  as addr:
-    json.dump(addresses_dict, addr)
-
-import subprocess
-
-subprocess.call("jq '.' output/results.json", shell=True)
+#s = SubnettingCalculator(["192","168","0","1"], 24)
+#print(f"Network ID: {s.get_networkID()}")
+#print(f"First address: {s.get_firstAddress()}")
+#print(f"Last address: {s.get_lastAddress()}")
+#print(f"Broadcast address: {s.get_broadcastAddress()}")
+#print(f"Available addresses: {s.get_addresses_count()}")
 
