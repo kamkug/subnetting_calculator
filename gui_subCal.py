@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from subCal import *
+from cli_subCal import *
 from tkinter import *
 
 class SubnettingCalculatorDisplay():
